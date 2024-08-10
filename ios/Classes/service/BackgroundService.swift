@@ -161,12 +161,24 @@ class BackgroundService: NSObject {
                               _ completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
     // If it is not a notification requested by this plugin, the processing below is ignored.
     if notification.request.identifier != NOTIFICATION_ID { return }
-    
-    if notificationOptions.playSound {
-      completionHandler([.alert, .sound])
-    } else {
-      completionHandler([.alert])
+
+    var features: [UNNotificationPresentationOptions] = []
+
+    if #available(iOS 14.0, *) {
+      if notificationOptions.showBanner {
+        features.append(UNNotificationPresentationOptions.banner)
+      }
+
+      if notificationOptions.showInCenter {
+        features.append(UNNotificationPresentationOptions.list)
+      }
     }
+
+    if notificationOptions.playSound {
+      features.append(UNNotificationPresentationOptions.sound)
+    }
+
+    completionHandler(UNNotificationPresentationOptions(features))
     
     // Prevents duplicate processing due to the `registrar.addApplicationDelegate`.
     canReceiveNotificationResponse = true
@@ -189,11 +201,7 @@ class BackgroundService: NSObject {
     notificationCenter.setNotificationCategories([category])
   }
   
-  private func requestNotification() {
-    if !notificationOptions.showNotification {
-      return
-    }
-    
+  private func requestNotification() {    
     notificationPermissionManager.checkPermission { permission in
       if permission == NotificationPermission.DENIED {
         print("notification permission denied..")

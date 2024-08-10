@@ -5,8 +5,9 @@
 //  Created by WOO JIN HWANG on 2021/08/11.
 //
 
-let SHOW_NOTIFICATION = "showNotification"
 let PLAY_SOUND = "playSound"
+let SHOW_BANNER = "showBanner"
+let SHOW_IN_CENTER = "showInCenter"
 
 let TASK_INTERVAL = "interval"
 let IS_ONCE_EVENT = "isOnceEvent"

@@ -143,8 +143,9 @@ class _ExamplePageState extends State<ExamplePage> {
         priority: NotificationPriority.LOW,
       ),
       iosNotificationOptions: const IOSNotificationOptions(
-        showNotification: true,
         playSound: false,
+        showBanner: false,
+        showInCenter: true,
       ),
       foregroundTaskOptions: const ForegroundTaskOptions(
         interval: 5000,
